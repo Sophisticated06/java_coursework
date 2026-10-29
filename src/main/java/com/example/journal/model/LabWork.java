@@ -1,36 +1,28 @@
 package com.example.journal.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-
-@Entity 
-@Table(name = "lab_works")
-
 public class LabWork {
-    @Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+  
     private Long id;
-
     private String title;
     private int grade;
     private boolean isAttended;
-
-    @ManyToOne 
-    @JoinColumn(name = "student_id")
-    private Student student; //Cсылка на студента
+    private Long studentId;
 
     public LabWork(){}
 
-    public LabWork(String title, int grade, boolean isAttended, Student student) {
+    public LabWork(Long id, String title, int grade, boolean isAttended, Long studentId) {
+        this.id = id;
         this.title = title;
         this.grade = grade;
         this.isAttended = isAttended;
-        this.student = student;
+        this.studentId = studentId;
+    }
+
+    public LabWork(String title, int grade, boolean isAttended, Long studentId) {
+        this.title = title;
+        this.grade = grade;
+        this.isAttended = isAttended;
+        this.studentId = studentId;
     }
 
     public Long getId() {
@@ -65,12 +57,11 @@ public class LabWork {
         isAttended = attended;
     }
 
-    public Student getStudent() {
-        return student;
+    public Long getStudentId() {
+        return studentId;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
     }
 }
-
