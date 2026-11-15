@@ -1,21 +1,28 @@
 package com.example.journal.dao;
 
+import com.example.journal.config.ConfigLoader;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String DB_URL = "jdbc:h2:./journal_db";
-    private static final String USER = "sa";
-    private static final String PASS = "";
+    
+    // Получаем параметры из нашего внешнего файла конфигурации
+    private static final String URL = ConfigLoader.getProperty("db.url");
+    private static final String USER = ConfigLoader.getProperty("db.user");
+    private static final String PASSWORD = ConfigLoader.getProperty("db.password");
 
-
-    // Метод для получения соединения с БД
+    // Возвращает новое соединение с базой данных по параметрам из config.properties
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL, USER, PASS);
-    }
-
-    public static void initDatabase() {
+        if (URL == null) {
+            throw new SQLException("URL базы данных не найден в конфигурационном файле!");
+        }
         
+        if (USER != null && PASSWORD != null) {
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } else {
+            return DriverManager.getConnection(URL);
+        }
     }
 }
